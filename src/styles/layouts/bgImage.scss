@@ -1,0 +1,14 @@
+@import './three.scss';
+@import './four.scss';
+@import './five.scss';
+@import './six.scss';
+@import './seven.scss';
+@import './eight.scss';
+
+.puzzle__item {
+  background-image: url('../assets/image/chikago.jpg');
+  background-repeat: no-repeat;
+  &[data-num='0'] {
+    background-image: none;
+  }
+}

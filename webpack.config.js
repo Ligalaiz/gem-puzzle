@@ -133,7 +133,18 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|svg|gif|webp)$/,
-        use: ['file-loader'],
+        use: [
+          { loader: 'file-loader' },
+          // {
+          //   loader: 'image-webpack-loader',
+          //   options: {
+          //     mozjpeg: {
+          //       progressive: true,
+          //       quality: 80,
+          //     },
+          //   },
+          // },
+        ],
       },
       {
         test: /\.(ogg|mp3|wav|mpe?g)$/i,
