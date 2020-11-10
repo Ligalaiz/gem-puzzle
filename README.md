@@ -1,6 +1,6 @@
 # Gem-puzzle
 
-Link: [Gem-puzzle](http://ligalaiz.github.io/gem-puzzle/)
+Link: [Gem-puzzle](https://ligalaiz.github.io/gem-puzzle/dist/index.html)
 
 ## Лицензия
 
