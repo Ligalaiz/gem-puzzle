@@ -45,6 +45,5 @@ export default function checkZero(e) {
     }
   }
 
-  console.log({ isZero, side });
   return { isZero, side };
 }

@@ -15,7 +15,7 @@ export default function clickHandler(e, table) {
     let isZeroObj = checkZero(e),
       num = parseInt(target.closest('div[data-num]').dataset.num);
     const { isZero, side } = isZeroObj;
-    console.log( isZero, side );
+
     if (isZero) {
       const items = document.querySelectorAll('.puzzle__item');
       let zeroIndex = field.findIndex((i) => i === 0),
