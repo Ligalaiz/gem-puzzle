@@ -57,8 +57,17 @@ export default function game(obj) {
       let startState = true;
       timer({ startState });
 
-      // Stirring is disabled specifically for testing convenience.
-      // shuffle(table);
+      // Shuffle
+      let getField = get('field');
+      getField.pop();
+      let needShuffle = true;
+      getField.forEach((i, index) => {
+        if (i !== index + 1) {
+          needShuffle = false;
+        }
+      });
+
+      if (needShuffle) shuffle(table);
 
       // Play board changes
       puzzles.forEach((item) => item.classList.remove('index'));

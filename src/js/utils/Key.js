@@ -9,10 +9,14 @@ export default class Key {
 
     if (num && this.isZero) {
       let tableSze = get('select');
-      this.div = create('div', 'puzzle__item num', create('span', null, `${this.num}`), this.parent, [
-        'num',
-        this.num,
-      ],['size', tableSze]);
+      this.div = create(
+        'div',
+        'puzzle__item num',
+        null,
+        this.parent,
+        ['num', this.num],
+        ['size', tableSze]
+      );
     } else {
       this.div = create('div', 'puzzle__item zero', null, this.parent, [
         'num',

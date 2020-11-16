@@ -67,10 +67,8 @@ body {
     max-width: 166px;
     box-shadow: inset -1px -2px 12px #fff;
     border-radius: 12px;
-    font-size: 20px;
-    color: #ffffff70;
-    font-weight: 100;
-    cursor: pointer; }
+    cursor: pointer;
+    animation: 1s linear; }
   .puzzle__overlay {
     position: absolute;
     left: 50%;
@@ -268,6 +266,42 @@ body {
   .stop,
   .select {
     border-right: 0; } }
+
+.to-left {
+  animation-name: left; }
+
+.to-right {
+  animation-name: right; }
+
+.to-top {
+  animation-name: top; }
+
+.to-bottom {
+  animation-name: bottom; }
+
+@keyframes left {
+  from {
+    transform: translateX(0); }
+  to {
+    transform: translateX(-100%); } }
+
+@keyframes right {
+  from {
+    transform: translateX(0); }
+  to {
+    transform: translateX(100%); } }
+
+@keyframes top {
+  from {
+    transform: translateX(0); }
+  to {
+    transform: translateY(-100%); } }
+
+@keyframes bottom {
+  from {
+    transform: translateX(0); }
+  to {
+    transform: translateY(100%); } }
 
 [data-num='1'][data-size='three'] {
   background-position: 0 0; }

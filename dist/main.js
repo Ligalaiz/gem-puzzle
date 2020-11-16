@@ -412,7 +412,7 @@ var Key = function Key(num, parent) {
 
   if (num && this.isZero) {
     var tableSze = Object(_storage_js__WEBPACK_IMPORTED_MODULE_0__["get"])('select');
-    this.div = Object(_create_js__WEBPACK_IMPORTED_MODULE_1__["default"])('div', 'puzzle__item num', Object(_create_js__WEBPACK_IMPORTED_MODULE_1__["default"])('span', null, "".concat(this.num)), this.parent, ['num', this.num], ['size', tableSze]);
+    this.div = Object(_create_js__WEBPACK_IMPORTED_MODULE_1__["default"])('div', 'puzzle__item num', null, this.parent, ['num', this.num], ['size', tableSze]);
   } else {
     this.div = Object(_create_js__WEBPACK_IMPORTED_MODULE_1__["default"])('div', 'puzzle__item zero', null, this.parent, ['num', this.num]);
   }
@@ -657,7 +657,8 @@ __webpack_require__.r(__webpack_exports__);
 function checkZero(e) {
   var target = e.target;
   var widthEl = target.closest('div[data-num]').offsetWidth;
-  var izZero = false;
+  var isZero = false;
+  var side = '';
   var cellWithZero;
   var x = target.closest('div[data-num]').getBoundingClientRect()['x'],
       y = target.closest('div[data-num]').getBoundingClientRect()['y'];
@@ -667,25 +668,48 @@ function checkZero(e) {
 
   if (y !== fromTop) {
     cellWithZero = document.elementFromPoint(e.x, e.y - widthEl).dataset.num;
-    if (cellWithZero === '0') izZero = true;
+
+    if (cellWithZero === '0') {
+      side = 'top';
+      isZero = true;
+    }
   }
 
   if (y + widthEl + 5 < fromTop + widthField) {
     cellWithZero = document.elementFromPoint(e.x, e.y + widthEl).dataset.num;
-    if (cellWithZero === '0') izZero = true;
+
+    if (cellWithZero === '0') {
+      side = 'bottom';
+      isZero = true;
+    }
   }
 
   if (x !== fromLeft) {
     cellWithZero = document.elementFromPoint(e.x - widthEl, e.y).dataset.num;
-    if (cellWithZero === '0') izZero = true;
+
+    if (cellWithZero === '0') {
+      side = 'left';
+      isZero = true;
+    }
   }
 
   if (x + widthEl + 5 < fromLeft + widthField) {
     cellWithZero = document.elementFromPoint(e.x + widthEl, e.y).dataset.num;
-    if (cellWithZero === '0') izZero = true;
+
+    if (cellWithZero === '0') {
+      side = 'right';
+      isZero = true;
+    }
   }
 
-  return izZero;
+  console.log({
+    isZero: isZero,
+    side: side
+  });
+  return {
+    isZero: isZero,
+    side: side
+  };
 }
 
 /***/ }),
@@ -721,11 +745,13 @@ function clickHandler(e, table) {
   var field = Object(_storage_js__WEBPACK_IMPORTED_MODULE_1__["get"])('field');
 
   if (!target.closest('div[data-num]').dataset.num.match(/^0/)) {
-    var isZero = Object(_checkZero_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e),
+    var isZeroObj = Object(_checkZero_js__WEBPACK_IMPORTED_MODULE_0__["default"])(e),
         num = parseInt(target.closest('div[data-num]').dataset.num);
+    var isZero = isZeroObj.isZero,
+        side = isZeroObj.side;
+    console.log(isZero, side);
 
     if (isZero) {
-      if (Object(_storage_js__WEBPACK_IMPORTED_MODULE_1__["get"])('soundBtn') === 'on') Object(_sound_js__WEBPACK_IMPORTED_MODULE_2__["default"])();
       var items = document.querySelectorAll('.puzzle__item');
       var zeroIndex = field.findIndex(function (i) {
         return i === 0;
@@ -735,21 +761,25 @@ function clickHandler(e, table) {
       });
       field[zeroIndex] = num;
       field[targetIndex] = 0;
-      Array.from(items).forEach(function (i) {
-        return i.remove();
-      });
-      table.generateLayout(field);
-      var gameClick = true;
-      Object(_calculateCountSteps_js__WEBPACK_IMPORTED_MODULE_3__["default"])({
-        gameClick: gameClick
-      });
-      Object(_storage_js__WEBPACK_IMPORTED_MODULE_1__["set"])('field', field);
+      target.classList.add("to-".concat(side));
+      setTimeout(function () {
+        if (Object(_storage_js__WEBPACK_IMPORTED_MODULE_1__["get"])('soundBtn') === 'on') Object(_sound_js__WEBPACK_IMPORTED_MODULE_2__["default"])();
+        Array.from(items).forEach(function (i) {
+          return i.remove();
+        });
+        table.generateLayout(field);
+        var gameClick = true;
+        Object(_calculateCountSteps_js__WEBPACK_IMPORTED_MODULE_3__["default"])({
+          gameClick: gameClick
+        });
+        Object(_storage_js__WEBPACK_IMPORTED_MODULE_1__["set"])('field', field);
 
-      if (Object(_gameFunctions_checkWinner_js__WEBPACK_IMPORTED_MODULE_4__["default"])()) {
-        Object(_gameFunctions_stopFunction_js__WEBPACK_IMPORTED_MODULE_5__["default"])();
-        Object(_scoreStorage_js__WEBPACK_IMPORTED_MODULE_6__["default"])();
-        Object(_gameFunctions_showWinMessage_js__WEBPACK_IMPORTED_MODULE_7__["default"])();
-      }
+        if (Object(_gameFunctions_checkWinner_js__WEBPACK_IMPORTED_MODULE_4__["default"])()) {
+          Object(_gameFunctions_stopFunction_js__WEBPACK_IMPORTED_MODULE_5__["default"])();
+          Object(_scoreStorage_js__WEBPACK_IMPORTED_MODULE_6__["default"])();
+          Object(_gameFunctions_showWinMessage_js__WEBPACK_IMPORTED_MODULE_7__["default"])();
+        }
+      }, 1000);
     }
   }
 }
@@ -905,9 +935,17 @@ function game(obj) {
       var startState = true;
       Object(_timer_js__WEBPACK_IMPORTED_MODULE_3__["default"])({
         startState: startState
-      }); // Stirring is disabled specifically for testing convenience.
-      // shuffle(table);
-      // Play board changes
+      }); // Shuffle
+
+      var getField = Object(_storage_js__WEBPACK_IMPORTED_MODULE_1__["get"])('field');
+      getField.pop();
+      var needShuffle = true;
+      getField.forEach(function (i, index) {
+        if (i !== index + 1) {
+          needShuffle = false;
+        }
+      });
+      if (needShuffle) Object(_shuffle_js__WEBPACK_IMPORTED_MODULE_0__["default"])(table); // Play board changes
 
       puzzles.forEach(function (item) {
         return item.classList.remove('index');
