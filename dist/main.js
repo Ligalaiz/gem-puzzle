@@ -702,10 +702,6 @@ function checkZero(e) {
     }
   }
 
-  console.log({
-    isZero: isZero,
-    side: side
-  });
   return {
     isZero: isZero,
     side: side
@@ -749,7 +745,6 @@ function clickHandler(e, table) {
         num = parseInt(target.closest('div[data-num]').dataset.num);
     var isZero = isZeroObj.isZero,
         side = isZeroObj.side;
-    console.log(isZero, side);
 
     if (isZero) {
       var items = document.querySelectorAll('.puzzle__item');
