@@ -74,13 +74,12 @@ body {
     font-weight: 100;
 
     cursor: pointer;
-    background-color: rgb(118, 197, 122);
   }
 
   &__overlay {
     position: absolute;
-    left: 0;
-    top: -33px;
+    left: 50%;
+    top: 50%;
 
     display: flex;
     justify-content: center;
@@ -96,6 +95,7 @@ body {
     background-color: #80808099;
 
     z-index: 1000;
+    transform: translate(-50%, -50%);
   }
 
   &__form {
@@ -289,7 +289,7 @@ body {
     overflow: hidden;
     max-height: 300px;
   }
-  
+
   &--active {
     display: flex;
   }
@@ -309,4 +309,37 @@ body {
 
 .on {
   background: #3ee33e;
+}
+
+@media (max-width: 500px) {
+  .puzzle {
+    &__overlay {
+      top: 58%;
+      max-height: 432px;
+      max-width: 322px;
+    }
+    &__wrap {
+      width: 320px;
+      height: 320px;
+    }
+    &__control {
+      flex-wrap: wrap;
+      justify-content: center;
+      bottom: -77px;
+    }
+  }
+
+  .popup {
+    max-height: 320px;
+    height: 100%;
+    min-height: unset;
+    &__item {
+      padding: 5px 10px;
+    }
+  }
+
+  .stop,
+  .select {
+    border-right: 0;
+  }
 }

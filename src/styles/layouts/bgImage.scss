@@ -6,9 +6,15 @@
 @import './eight.scss';
 
 .puzzle__item {
-  background-image: url('../assets/image/chikago.jpg');
+  background-image: url('../assets/image/chicago.jpg');
   background-repeat: no-repeat;
   &[data-num='0'] {
     background-image: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .puzzle__item {
+    background-image: url('../assets/image/chicago--small.jpg');
   }
 }
